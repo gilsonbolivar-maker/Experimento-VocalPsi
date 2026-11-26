@@ -16,6 +16,7 @@ import type {
   SessaoAnalisada,
 } from './types/analysis.ts';
 import { prepareGeminiSessionPayload } from './utils/acousticAnalysis.ts';
+import { prepararAudio } from './utils/envioAudio.ts';
 import {
   offsetMMSS,
   parseMMSSToSeconds,
@@ -131,6 +132,13 @@ export default function App() {
         const { block, acousticSummary } = item;
 
         setCurrentBlock(block.index);
+        setStageLabel(`Enviando bloco ${block.index} de ${block.total}...`);
+        const audio = await prepararAudio(
+          base64ToBlob(block.wavBase64, block.mimeType),
+          controller.signal,
+          block.wavBase64
+        );
+        if (controller.signal.aborted) return;
         setStageLabel(`Analisando bloco ${block.index} de ${block.total}...`);
 
         const res = await fetch('/api/analyze-chunk', {
@@ -138,8 +146,7 @@ export default function App() {
           headers: { 'Content-Type': 'application/json' },
           signal: controller.signal,
           body: JSON.stringify({
-            audioBase64: block.wavBase64,
-            mimeType: block.mimeType,
+            ...audio,
             blockIndex: block.index,
             totalBlocks: block.total,
             acousticSummary,

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FileAudio, FlaskConical, Loader2, Mic, Square, Upload } from 'lucide-react';
 import { AudioAnalyzer } from '../utils/audioAnalyzer.ts';
 import { translateErrorToPortuguese, validateAudioFile } from '../utils/validation.ts';
+import { prepararAudio } from '../utils/envioAudio.ts';
 
 export type FictitiousCaseId = 'neutra' | 'triste_pausas' | 'incongruencia_embargada';
 
@@ -465,19 +466,11 @@ export function StartScreen({
                         setLocalError(null);
                         setIsTranscribingMic(true);
                         try {
-                          const buf = await recordedAudio.file.arrayBuffer();
-                          const bytes = new Uint8Array(buf);
-                          let binary = '';
-                          for (let i = 0; i < bytes.length; i += 0x8000) {
-                            binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-                          }
+                          const audio = await prepararAudio(recordedAudio.file);
                           const res = await fetch('/api/transcribe', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              audioBase64: btoa(binary),
-                              mimeType: recordedAudio.file.type || 'audio/webm',
-                            }),
+                            body: JSON.stringify(audio),
                           });
                           const data = await res.json();
                           if (!res.ok) {

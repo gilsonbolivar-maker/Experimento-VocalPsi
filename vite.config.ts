@@ -6,6 +6,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // No endereço protegido (vocal.pixelnexo.com.br) o app fica em /Vocalpsianalise/.
+    base: process.env.VOCAL_BASE || '/',
     plugins: [
       react(),
       tailwindcss(),

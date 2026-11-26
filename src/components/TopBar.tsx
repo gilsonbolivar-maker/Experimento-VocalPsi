@@ -1,5 +1,6 @@
 import { Trash2 } from 'lucide-react';
 import type { AppScreen } from '../types/analysis.ts';
+import { VERSAO_APP } from '../utils/envioAudio.ts';
 
 interface TopBarProps {
   screen: AppScreen;
@@ -28,6 +29,7 @@ export function TopBar({
           className="font-display text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 sm:text-xl"
         >
           Vocalpsianalise
+          <span className="ml-2 align-middle text-xs font-medium text-slate-400">Versão {VERSAO_APP}</span>
         </button>
 
         {/* Zona 2: Links de navegação concisos em linha única */}
