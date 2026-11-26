@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ExportView } from './components/ExportView.tsx';
 import { ProcessingScreen } from './components/ProcessingScreen.tsx';
+import { QuickGuideModal } from './components/QuickGuideModal.tsx';
 import { ResultsView } from './components/ResultsView.tsx';
 import { RiskAlertBanner } from './components/RiskAlertBanner.tsx';
 import { SettingsModal } from './components/SettingsModal.tsx';
@@ -35,6 +36,7 @@ export default function App() {
   const [screen, setScreen] = useState<AppScreen>('inicio');
   const [activeTab, setActiveTab] = useState<ResultadoTab>('transcricao');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [quickGuideOpen, setQuickGuideOpen] = useState(false);
 
   const [consentGiven, setConsentGiven] = useState(false);
   const [nonEmotionalNotes, setNonEmotionalNotes] = useState('');
@@ -284,6 +286,7 @@ export default function App() {
         screen={screen}
         hasSession={Boolean(sessao)}
         onNavigate={(next) => setScreen(next)}
+        onOpenQuickGuide={() => setQuickGuideOpen(true)}
         onOpenSettings={() => setSettingsOpen(true)}
         onClearSession={handleClearSession}
       />
@@ -331,6 +334,7 @@ export default function App() {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onGoToExport={() => setScreen('exportar')}
+          onOpenQuickGuide={() => setQuickGuideOpen(true)}
           highlightedTime={highlightedTime}
         />
       )}
@@ -339,6 +343,7 @@ export default function App() {
         <ExportView sessao={sessao} onBackToResults={() => setScreen('resultado')} />
       )}
 
+      <QuickGuideModal isOpen={quickGuideOpen} onClose={() => setQuickGuideOpen(false)} />
       <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );

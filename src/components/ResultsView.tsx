@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { FileDown, Info } from 'lucide-react';
+import { BookOpen, FileDown, Info } from 'lucide-react';
 import type { ResultadoTab, SessaoAnalisada } from '../types/analysis.ts';
 import { formatSecondsToMMSS, parseMMSSToSeconds } from '../utils/validation.ts';
 import { EmotionsTab } from './tabs/EmotionsTab.tsx';
@@ -15,6 +15,7 @@ interface ResultsViewProps {
   activeTab: ResultadoTab;
   onTabChange: (tab: ResultadoTab) => void;
   onGoToExport: () => void;
+  onOpenQuickGuide: () => void;
   highlightedTime: string | null;
 }
 
@@ -33,6 +34,7 @@ export function ResultsView({
   activeTab,
   onTabChange,
   onGoToExport,
+  onOpenQuickGuide,
   highlightedTime,
 }: ResultsViewProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -66,14 +68,25 @@ export function ResultsView({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={onGoToExport}
-          className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-teal-800 whitespace-nowrap shrink-0"
-        >
-          <FileDown className="h-4 w-4" aria-hidden="true" />
-          <span>Exportar relatório</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onOpenQuickGuide}
+            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition-colors hover:bg-amber-50 whitespace-nowrap shrink-0"
+          >
+            <BookOpen className="h-4 w-4 text-teal-700" aria-hidden="true" />
+            <span>Guia rápido</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onGoToExport}
+            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-teal-800 whitespace-nowrap shrink-0"
+          >
+            <FileDown className="h-4 w-4" aria-hidden="true" />
+            <span>Exportar relatório</span>
+          </button>
+        </div>
       </div>
 
       {/* Cabeçalho da sessão + Player local */}

@@ -5,6 +5,7 @@ interface TopBarProps {
   screen: AppScreen;
   hasSession: boolean;
   onNavigate: (screen: AppScreen) => void;
+  onOpenQuickGuide: () => void;
   onOpenSettings: () => void;
   onClearSession: () => void;
 }
@@ -13,6 +14,7 @@ export function TopBar({
   screen,
   hasSession,
   onNavigate,
+  onOpenQuickGuide,
   onOpenSettings,
   onClearSession,
 }: TopBarProps) {
@@ -71,6 +73,14 @@ export function TopBar({
               </button>
             </>
           )}
+
+          <button
+            type="button"
+            onClick={onOpenQuickGuide}
+            className="min-h-[44px] whitespace-nowrap shrink-0 border-b-2 border-transparent px-1 transition-colors hover:text-slate-900"
+          >
+            Guia rápido
+          </button>
 
           <button
             type="button"
